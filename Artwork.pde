@@ -14,7 +14,7 @@ public class Artwork {
   boolean onView;
   boolean isFeatured;
   Multimap<LocalDate, Event> events;
-  Map<LocalDate, Integer> eventsCounts;
+  Map<LocalDate, Integer> eventsCounts;  //total number of events for each day
   Map<LocalDate, Integer> eventsPageViewCounts;  
   
   PVector location; 

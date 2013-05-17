@@ -1,37 +1,21 @@
-void mousePressed() {}
-
 void keyPressed() {
-  if (key=='n') {
-    conv=max(-60,conv-1);
-    setCams();
+  if (keyCode == KeyEvent.VK_ENTER) {
+    saveFrame("snapshots/snapshot-####.png");
   }
-  if (key=='m') {
-    conv=min(60,conv+1);
-    setCams();
-  }
-  if (key==',') {
-    depth=max(0,depth-2);
-    setCams();
-  }
-  if (key=='.') {
-    depth=min(150,depth+2);
-    setCams();
-  }    
   
-  if (key=='a') {
-    mode = (mode+1) % modes.length;
-    setMaskMode();
-  }    
-  
-  if (key=='p') {
+  if (keyCode == KeyEvent.VK_SPACE) {
     paused = !paused;
   }
   
-  if (key == 'r') {
+  if (keyCode == KeyEvent.VK_I) {
+    showInfoPanel = !showInfoPanel;
+  }
+  
+  if (keyCode == KeyEvent.VK_R) {
     recording = !recording;
   }
   
-  if (key=='d') {
+  if (keyCode == KeyEvent.VK_D) {
     //toggle data set
     selectedDataSet = (selectedDataSet + 1) % dataSets.length;
   }  
