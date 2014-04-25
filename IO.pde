@@ -3,6 +3,10 @@ void keyPressed() {
     saveFrame("snapshots/snapshot-####.png");
   }
   
+  if (keyCode == KeyEvent.VK_A) {
+    animateEvents = !animateEvents;
+  }
+  
   if (keyCode == KeyEvent.VK_SPACE) {
     paused = !paused;
   }
