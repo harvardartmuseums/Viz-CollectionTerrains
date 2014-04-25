@@ -8,13 +8,13 @@ final static int ARTWORK_SIZE_HEIGHT = 20;
 final static int ARTWORK_SPACING = 0;*/
 
 //Corner position, moving diagonally across the landscape (passing through the forest)
-/*PVector cameraEye = new PVector(18500, -250, 18500);
-PVector cameraLookAt = new PVector(0, -3000, 0);
-PVector cameraVelocity = new PVector(-10, 0, -10);
-final static int ARTWORK_SIZE_WIDTH = 20;
-final static int ARTWORK_SIZE_DEPTH = 20;
-final static int ARTWORK_SIZE_HEIGHT = 1;
-final static int ARTWORK_SPACING = 10;*/
+//PVector cameraEye = new PVector(18500, -250, 18500);
+//PVector cameraLookAt = new PVector(0, -3000, 0);
+//PVector cameraVelocity = new PVector(-10, 0, -10);
+//final static int ARTWORK_SIZE_WIDTH = 20;
+//final static int ARTWORK_SIZE_DEPTH = 20;
+//final static int ARTWORK_SIZE_HEIGHT = 1;
+//final static int ARTWORK_SPACING = 10;
 
 //Middle of grid, rising vertically from ground level
 /*PVector cameraEye = new PVector(4720, 0, 6000);
@@ -26,9 +26,10 @@ final static int ARTWORK_SIZE_HEIGHT = 20;
 final static int ARTWORK_SPACING = 0;*/
 
 //Corner position, moving diagonally across the landscape (passing through the forest)
-PVector cameraEye = new PVector(-3000, -1550, 12500);
+PVector cameraEye = new PVector(-3000, -1550, 18500);
 PVector cameraLookAt = new PVector(18500, -100, 0);
 PVector cameraVelocity = new PVector(-5, 0, -5);
+PVector cameraLookAtVelocity = new PVector(-5, 0, 0);
 final static int ARTWORK_SIZE_WIDTH = 20;
 final static int ARTWORK_SIZE_DEPTH = 20;
 final static int ARTWORK_SIZE_HEIGHT = 1;
@@ -44,7 +45,7 @@ int selectedDataSet = 0;
 int dayCounter = 0;
 
 final static String DATE_RANGE_START = "2009-05-18";
-final static String DATE_RANGE_END = "2013-02-20";
+final static String DATE_RANGE_END = "2014-02-24";
 
 final static String DATA_FILE_ARTWORKS = "data-objects.csv";
 final static String DATA_FILE_EVENTS = "data-objects-events-pageviews.csv";
@@ -53,10 +54,10 @@ List<LocalDate> dates = new ArrayList<LocalDate>();
 Map<Integer, Artwork> artworks = new LinkedHashMap<Integer, Artwork>();
 
 boolean paused = false;
-boolean animateEvents = false;
+boolean animateEvents = true;
 boolean animateCamera = true;
 boolean showInfoPanel = true;
-boolean recording = false;
+boolean recording = true;
 
 
 void setup(){ 
@@ -102,7 +103,7 @@ void draw(){
   cam.beginDraw();
   cam.background(255);
       
-  cam.directionalLight(255,255,255, 18500, 0, -1);
+//  cam.directionalLight(255,255,255, 18500, 0, -1);
   
   LocalDate currentDate = dates.get(dayCounter);   
 
@@ -111,7 +112,7 @@ void draw(){
  
   //Draw all of the objects in the scene  
   for (Artwork a: artworks.values()) {  
-    
+        
     //Get some value from the current artwork. The value is the height of the block we're about to render.
     if (animateEvents) {
       if (a.hasEventsToday(currentDate)) {
@@ -149,7 +150,7 @@ void draw(){
         cam.box(ARTWORK_SIZE_WIDTH, dataPointCurrentDay*ARTWORK_SIZE_HEIGHT, ARTWORK_SIZE_DEPTH); 
         cam.popMatrix();      
       }
-    }      
+    }  
   }
   
   cam.endDraw();
@@ -161,10 +162,12 @@ void draw(){
 
   if (showInfoPanel) {
     noStroke();
+    fill(255);
     rect(0, height-60, width, 60);
     fill(0,80);
+    text("dataset:" +  dataSets[selectedDataSet], 8, height-6);
     text("day:" + dates.get(dayCounter).toString("yyyy-MM-dd") + " (" + dates.get(dayCounter).dayOfWeek().getAsText() + ")", 8, height-24);      
-    text("camera:" + cameraEye.toString(), 8, height-42);  
+    text("camera:" + cameraEye.toString() + ", look at:" + cameraLookAt.toString(), 8, height-42);  
   }
     
   if (recording) {
@@ -172,13 +175,16 @@ void draw(){
   }
   
   if (animateCamera) {
+    cameraLookAt.add(cameraLookAtVelocity);
     cameraEye.add(cameraVelocity);
     setCams();
   }
  
-  if (dayCounter < dates.size()-1) {
-    dayCounter++;
-  }  
+  if (animateEvents) {
+    if (dayCounter < dates.size()-1) {
+      dayCounter++;
+    }  
+  }
 } 
 
 void arrangeArtworks() {
