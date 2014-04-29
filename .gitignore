@@ -1,2 +1,12 @@
 output/
 snapshots/
+
+**/data/*.csv
+**/data/*.sql
+
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
