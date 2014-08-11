@@ -2,17 +2,16 @@ public class Artwork {
  
   int objectID;
   int imageCount;
-  int division;
-  int classification;
+  String division;
+  String classification;
   int totalPageViews;
   int totalUniquePageViews;
   int totalEdits;
   int imagePermission;
+  int verificationLevel;
   int orderNumber;
   LocalDate dateFirstViewed;
   LocalDate dateLastViewed;
-  boolean onView;
-  boolean isFeatured;
   Multimap<LocalDate, Event> events;
   Map<LocalDate, Integer> eventsCounts;  //total number of events for each day
   Map<LocalDate, Integer> eventsPageViewCounts;  
@@ -38,15 +37,14 @@ public class Artwork {
     totalPageViews = int(bits[1]);
     totalUniquePageViews = int(bits[2]);
     totalEdits = int(bits[3]);
-    classification = int(bits[4]);
+    classification = bits[4];
     imagePermission = int(bits[5]);
-    imageCount = int(bits[6]);
-    division = int(bits[7]);
-    onView = boolean(bits[8]);
-    isFeatured = boolean(bits[9]);
-    if (bits[10].equals("NULL") == false) dateFirstViewed = new LocalDate(bits[10]);
-    if (bits[11].equals("NULL") == false) dateLastViewed = new LocalDate(bits[11]); 
-    orderNumber = int(bits[12]);   
+    verificationLevel = int(bits[6]);
+    imageCount = int(bits[7]);
+    division = bits[8];
+    if (bits[9].equals("NULL") == false) dateFirstViewed = new LocalDate(bits[9]);
+    if (bits[10].equals("NULL") == false) dateLastViewed = new LocalDate(bits[10]); 
+    orderNumber = int(bits[11]);   
 
     events = ArrayListMultimap.create();  
     eventsCounts = new HashMap<LocalDate, Integer>();      

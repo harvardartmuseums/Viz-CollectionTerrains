@@ -19,6 +19,10 @@ void keyPressed() {
     recording = !recording;
   }
   
+  if (keyCode == KeyEvent.VK_C) {
+    selectedCamera = (selectedCamera + 1) % cameras.length;
+  }
+  
   if (keyCode == KeyEvent.VK_D) {
     //toggle data set
     selectedDataSet = (selectedDataSet + 1) % dataSets.length;
