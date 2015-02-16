@@ -1,3 +1,18 @@
+/* Keyboard commands
+    
+    Enter - save a snapshot of the screen
+    Left arrow - 
+    Right arrow - 
+    Up arrow - 
+    Down arrow - 
+    Spacebar - pause all animations
+    A - toggle on/off the animation of the events data
+    C - change the camera angle
+    D - change the dataset
+    I - toggle on/off the information panel
+    R - record every frame to disk
+    
+*/
 void keyPressed() {
   if (keyCode == KeyEvent.VK_ENTER) {
     saveFrame("snapshots/snapshot-####.png");
