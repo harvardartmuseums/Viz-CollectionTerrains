@@ -4,6 +4,7 @@ public class Artwork {
   int imageCount;
   String division;
   String classification;
+  String primaryColor;
   int totalPageViews;
   int totalUniquePageViews;
   int totalEdits;
@@ -45,7 +46,8 @@ public class Artwork {
     if (bits[9].equals("NULL") == false) dateFirstViewed = new LocalDate(bits[9]);
     if (bits[10].equals("NULL") == false) dateLastViewed = new LocalDate(bits[10]); 
     orderNumber = int(bits[11]);   
-
+    if (bits[13].equals("NULL") == false) primaryColor = bits[13];
+   
     events = ArrayListMultimap.create();  
     eventsCounts = new HashMap<LocalDate, Integer>();      
   }
