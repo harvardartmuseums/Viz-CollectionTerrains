@@ -44,6 +44,9 @@ int selectedCamera = 4;
 String dataSets[] = {"pageviews","uniquepageviews","edits"};
 int selectedDataSet = 0;
 
+String fills[] = {"default","gradient","objectcolor"};
+int selectedFill = 0;
+
 int dayCounter = 0;
 
 int terrainWidth = 0;
@@ -148,8 +151,21 @@ void draw(){
     if (dataPoint > 0 || dataPointCurrentDay > 0) {      
       cam.pushMatrix(); 
       cam.translate(a.location.x, -(dataPoint*ARTWORK_SIZE_HEIGHT)/2, a.location.z); 
-      cam.fill(200, 200, 200);
-//      cam.fill(map(a.totalPageViews,0,1000,0,255)*50, 200, 200);
+
+      //Color the object box
+      if (selectedFill == 0) {
+        cam.fill(200, 200, 200);
+      } else if (selectedFill == 1) {
+        cam.fill(map(a.totalPageViews,0,1000,0,255)*2, 200, 200);        
+      } else {
+        if (a.primaryColor != null) {
+          color c = unhex("FF" + a.primaryColor.substring(1));
+          cam.fill(c);        
+        } else {
+          cam.fill(200, 200, 200);
+        }  
+      }
+      
       cam.box(ARTWORK_SIZE_WIDTH, dataPoint*ARTWORK_SIZE_HEIGHT, ARTWORK_SIZE_DEPTH); 
       cam.popMatrix();
 

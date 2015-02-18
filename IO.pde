@@ -9,6 +9,7 @@
     A - toggle on/off the animation of the events data
     C - change the camera angle
     D - change the dataset
+    F - change the color
     I - toggle on/off the information panel
     R - record every frame to disk
     
@@ -42,6 +43,10 @@ void keyPressed() {
     //toggle data set
     selectedDataSet = (selectedDataSet + 1) % dataSets.length;
   }  
+  
+  if (keyCode == KeyEvent.VK_F) {
+    selectedFill = (selectedFill + 1) % fills.length;
+  }    
 }
 
 
