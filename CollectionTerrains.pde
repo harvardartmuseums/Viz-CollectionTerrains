@@ -64,14 +64,14 @@ int terrainWidth = 0;
 int terrainHeight = 0;
 
 final static String DATE_RANGE_START = "2009-05-13";
-final static String DATE_RANGE_END = "2014-08-09";
+final static String DATE_RANGE_END = "2017-10-30";
 
 final static String DATA_FILE_ARTWORKS = "data-objects.csv";
 //final static String DATA_FILE_ARTWORKS = "data-objects-by-culture.csv";
 //final static String DATA_FILE_ARTWORKS = "data-objects-by-classification.csv";
 //final static String DATA_FILE_ARTWORKS = "data-objects-by-verification.csv";
 //final static String DATA_FILE_ARTWORKS = "data-objects-by-pageviews.csv";
-final static String DATA_FILE_EVENTS = "data-objects-events-pageviews.csv";
+final static String DATA_FILE_EVENTS = "data-objects-events.csv";
 
 List<LocalDate> dates = new ArrayList<LocalDate>();
 Map<Integer, Artwork> artworks = new LinkedHashMap<Integer, Artwork>();
