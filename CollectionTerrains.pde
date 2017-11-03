@@ -1,3 +1,11 @@
+import peasy.*;
+import peasy.org.apache.commons.math.*;
+import peasy.org.apache.commons.math.geometry.*;
+import peasy.test.*;
+
+import java.util.*;
+import java.awt.event.KeyEvent;
+
 PVector cameras[][] = {  //Eye, LookAt, Eye Velocity, LookAt Velocity
         {new PVector(4720, -12000, 6000), new PVector(4720, 0, 2000), new PVector(0, 0, 0), new PVector(0, 0, 0)},      //High vantage point looking down, no movement
         {new PVector(7650, -30000, 7650), new PVector(7650, 0, 7630), new PVector(0, 0, 0), new PVector(0, 0, 0)},      //Centered overhead looking straight down, no movement
@@ -38,7 +46,7 @@ final static int ARTWORK_SPACING = 10;
 
 PFont fontA;
 
-PGraphics cam;
+PeasyCam cam;
 int selectedCamera = 4;
 
 String dataSets[] = {"pageviews","uniquepageviews","edits"};
@@ -89,32 +97,21 @@ void setup(){
       dates.add(d);
   }  
       
-  cam = createGraphics(width, height, P3D);
-  cam.beginDraw();
-  cam.noStroke();
-  cam.endDraw();
-  setCams();
-  
   //Prepare the remaining odds and ends
   fontA = loadFont("CourierNew36.vlw");
   textFont(fontA, 15);
+  
+  cam = new PeasyCam(this, cameras[selectedCamera][1].x, cameras[selectedCamera][1].y, cameras[selectedCamera][1].z, 10000);
 } 
 
 void setCams() {
-  cam.camera(cameras[selectedCamera][0].x,cameras[selectedCamera][0].y,cameras[selectedCamera][0].z, 
-              cameras[selectedCamera][1].x,cameras[selectedCamera][1].y,cameras[selectedCamera][1].z,  
-              0,1.0,0);              
-  
-  float fov = PI/6.0;
-  float cameraZ = (height/2.0) / tan(fov/2.0);
-  cam.perspective(fov, float(width)/float(height),cameraZ/10.0, cameraZ*10.0);
+  cam.lookAt(cameras[selectedCamera][1].x, cameras[selectedCamera][1].y, cameras[selectedCamera][1].z, 10000, 10000);
 }
 
 void draw(){
-  cam.beginDraw();
-  cam.background(255);
-      
-//  cam.directionalLight(255,255,255, 18500, 0, -1);
+  background(255);
+  
+  perspective(PI/3.0, (float) width/height, 1, 1000000);
   
   LocalDate currentDate = dates.get(dayCounter);   
 
@@ -149,44 +146,38 @@ void draw(){
     
 
     if (dataPoint > 0 || dataPointCurrentDay > 0) {      
-      cam.pushMatrix(); 
-      cam.translate(a.location.x, -(dataPoint*ARTWORK_SIZE_HEIGHT)/2, a.location.z); 
+      pushMatrix(); 
+      translate(a.location.x, -(dataPoint*ARTWORK_SIZE_HEIGHT)/2, a.location.z); 
 
       //Color the object box
       if (selectedFill == 0) {
-        cam.fill(200, 200, 200);
+        fill(200, 200, 200);
       } else if (selectedFill == 1) {
-        cam.fill(map(a.totalPageViews,0,1000,0,255)*2, 200, 200);        
+        fill(map(a.totalPageViews,0,1000,0,255)*2, 200, 200);        
       } else {
         if (a.primaryColor != null) {
           color c = unhex("FF" + a.primaryColor.substring(1));
-          cam.fill(c);        
+          fill(c);        
         } else {
-          cam.fill(200, 200, 200);
+          fill(200, 200, 200);
         }  
       }
       
-      cam.box(ARTWORK_SIZE_WIDTH, dataPoint*ARTWORK_SIZE_HEIGHT, ARTWORK_SIZE_DEPTH); 
-      cam.popMatrix();
+      box(ARTWORK_SIZE_WIDTH, dataPoint*ARTWORK_SIZE_HEIGHT, ARTWORK_SIZE_DEPTH); 
+      popMatrix();
 
       if (animateEvents && a.hasEventsToday(currentDate)) {
-        cam.pushMatrix(); 
-        cam.translate(a.location.x, -((dataPoint*ARTWORK_SIZE_HEIGHT) + ((dataPointCurrentDay*ARTWORK_SIZE_HEIGHT)/2)), a.location.z); 
-        cam.fill(200, 0, 0);
-        cam.box(ARTWORK_SIZE_WIDTH, dataPointCurrentDay*ARTWORK_SIZE_HEIGHT, ARTWORK_SIZE_DEPTH); 
-        cam.popMatrix();      
+        pushMatrix(); 
+        translate(a.location.x, -((dataPoint*ARTWORK_SIZE_HEIGHT) + ((dataPointCurrentDay*ARTWORK_SIZE_HEIGHT)/2)), a.location.z); 
+        fill(200, 0, 0);
+        box(ARTWORK_SIZE_WIDTH, dataPointCurrentDay*ARTWORK_SIZE_HEIGHT, ARTWORK_SIZE_DEPTH); 
+        popMatrix();      
       }
     }  
   }
   
-  cam.endDraw();
-
-  loadPixels();
-  cam.loadPixels();
-  arrayCopy(cam.pixels, pixels);
-
-
   if (showInfoPanel) {
+    cam.beginHUD();
     noStroke();
     fill(255);
     rect(0, height-60, width, 60);
@@ -194,21 +185,12 @@ void draw(){
     text("dataset:" +  dataSets[selectedDataSet], 8, height-6);
     text("day:" + dates.get(dayCounter).toString("yyyy-MM-dd") + " (" + dates.get(dayCounter).dayOfWeek().getAsText() + ")", 8, height-24);      
     text("camera " + selectedCamera + ":" + cameras[selectedCamera][0].toString() + ", look at:" + cameras[selectedCamera][1].toString(), 8, height-42);  
+    cam.endHUD();
   }
     
   if (recording) {
     saveFrame("output/frames####.png");
   }
-  
-  if (animateCamera) {
-    for (int i=0; i<cameras.length; i++) {
-      cameras[i][0].add(cameras[i][2]);
-      cameras[i][1].add(cameras[i][3]);
-    }
-    
-    setCams();
-  }
- 
 
   if (animateEvents) {
     //There is a problem here. The dayCounter stops at the last day and there is no mechanism to stop adding the days event.
