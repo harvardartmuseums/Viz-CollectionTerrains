@@ -5,7 +5,7 @@ This is a Processing sketch that renders collections data as animated terrains.
 Requirements
 ------------
 
-Processing 1.5.1<br />
+Processing 3.*<br />
 Guava Libraries<br />
 Joda Time Libraries<br />
 
