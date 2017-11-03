@@ -37,6 +37,7 @@ void keyPressed() {
   
   if (keyCode == KeyEvent.VK_C) {
     selectedCamera = (selectedCamera + 1) % cameras.length;
+    setCams();
   }
   
   if (keyCode == KeyEvent.VK_D) {
@@ -48,10 +49,3 @@ void keyPressed() {
     selectedFill = (selectedFill + 1) % fills.length;
   }    
 }
-
-
-
-
-
-
-
