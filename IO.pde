@@ -3,7 +3,7 @@
     Enter - save a snapshot of the screen
     Left arrow - 
     Right arrow - 
-    Up arrow - 
+    Up arrow - cycle through the data set filters
     Down arrow - 
     Spacebar - pause all animations
     A - toggle on/off the animation of the events data
@@ -48,4 +48,21 @@ void keyPressed() {
   if (keyCode == KeyEvent.VK_F) {
     selectedFill = (selectedFill + 1) % fills.length;
   }    
+  
+  if (keyCode == KeyEvent.VK_UP) {
+    //toggle classification
+    selectedClassification = (selectedClassification + 1) % classifications.length;
+        
+    filterArtworks.clear();
+    
+    if (classifications[selectedClassification] == "all") {
+      filterArtworks.putAll(artworks);    
+    } else {
+      for (Artwork a: artworks.values()) {
+        if (a.classification.equals(classifications[selectedClassification])) {
+          filterArtworks.put(a.objectID, a);
+        }
+      }
+    }
+  }  
 }

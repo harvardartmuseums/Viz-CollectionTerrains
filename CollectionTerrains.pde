@@ -55,6 +55,9 @@ int selectedDataSet = 0;
 String fills[] = {"default","gradient","objectcolor"};
 int selectedFill = 0;
 
+String classifications[] = {"all","Coins","Drawings","Paintings","Photographs","Prints","Sculpture","Vessels"};
+int selectedClassification = 0;
+
 int dayCounter = 0;
 
 int terrainWidth = 0;
@@ -72,6 +75,7 @@ final static String DATA_FILE_EVENTS = "data-objects-events-pageviews.csv";
 
 List<LocalDate> dates = new ArrayList<LocalDate>();
 Map<Integer, Artwork> artworks = new LinkedHashMap<Integer, Artwork>();
+Map<Integer, Artwork> filterArtworks = new LinkedHashMap<Integer, Artwork>();
 
 boolean paused = false;
 boolean animateEvents = false;
@@ -119,7 +123,7 @@ void draw(){
   int dataPointCurrentDay = 0;
  
   //Draw all of the objects in the scene  
-  for (Artwork a: artworks.values()) {  
+  for (Artwork a: filterArtworks.values()) {  
         
     //Get some value from the current artwork. The value is the height of the block we're about to render.
     if (animateEvents) {
@@ -182,7 +186,7 @@ void draw(){
     fill(255);
     rect(0, height-60, width, 60);
     fill(0,80);
-    text("dataset:" +  dataSets[selectedDataSet], 8, height-6);
+    text("dataset:" +  dataSets[selectedDataSet] + ", filter:" + classifications[selectedClassification] + "(" + filterArtworks.size() + "), fill:" + fills[selectedFill], 8, height-6);
     text("day:" + dates.get(dayCounter).toString("yyyy-MM-dd") + " (" + dates.get(dayCounter).dayOfWeek().getAsText() + ")", 8, height-24);      
     text("camera " + selectedCamera + ":" + cameras[selectedCamera][0].toString() + ", look at:" + cameras[selectedCamera][1].toString(), 8, height-42);  
     cam.endHUD();
