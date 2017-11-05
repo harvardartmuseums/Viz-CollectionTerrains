@@ -12,8 +12,6 @@ public void fillArtwork(Map<Integer, Artwork> _a) {
   println("Done stepping through the artworks data");
   
   fillArtworkEvents(_a);
-  
-  filterArtworks.putAll(_a);
 }
 
 public void fillArtworkEvents(Map<Integer, Artwork> _a) {

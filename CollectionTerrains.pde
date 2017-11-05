@@ -91,6 +91,9 @@ void setup(){
   fillArtwork(artworks);  
   arrangeArtworks();
   
+  //Make a copy of the artworks to use for display purposes
+  filterArtworks.putAll(artworks);
+  
   //Create a list of dates for the time series
   LocalDate startDate = new LocalDate(DATE_RANGE_START);
   LocalDate endDate = new LocalDate(DATE_RANGE_END);
