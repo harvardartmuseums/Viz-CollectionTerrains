@@ -15,19 +15,16 @@ public class Artwork {
   LocalDate dateLastViewed;
   Multimap<LocalDate, Event> events;
   Map<LocalDate, Integer> eventsCounts;  //total number of events for each day
-  Map<LocalDate, Integer> eventsPageViewCounts;  
   
   PVector location; 
    
-  private color c;
-  private float colorAlive = 255.0;
-  private float colorDead = 48.0;
-  private float colorNow = colorDead;
-  private boolean isAlive = false;
-  private float decayRate = 0.0;
-  private int sizeMultiplier = 1;
-  private int daysAlive = 0;
+  color fillColor = color(200, 200, 200);
+  
   private int eventsToDate = 0;
+  private int dataset = 0;
+  private int width = 20;
+  private int depth = 20;
+  private int heightScaleFactor = 1;
   
   public Artwork(String _data) {
     String bits[];    
@@ -81,12 +78,26 @@ public class Artwork {
   }
   
   public void render() {
-    noStroke();
-    fill(c);
-    pushMatrix();
-    translate(location.x, location.y);
-    rect(0, 0, ARTWORK_SIZE_WIDTH, ARTWORK_SIZE_DEPTH);
-    popMatrix();
+    int dataPoint = 0;
+    
+    if (dataset == 0) {
+      dataPoint = totalPageViews;
+    } else if (dataset == 1) {
+      dataPoint = totalUniquePageViews;
+    } else if (dataset == 2) {
+      dataPoint = totalEdits;    
+    }
+    
+    // Don't try draw it if there is no data to draw
+    if (dataPoint > 0) {
+      noStroke();
+      fill(fillColor);
+  
+      pushMatrix();
+      translate(location.x, -(dataPoint*heightScaleFactor)/2, location.z); 
+      box(width, dataPoint*heightScaleFactor, depth); 
+      popMatrix();
+    }
   }
 
   //This doesn't differentiate between pageviews, edits, etc...
@@ -113,5 +124,32 @@ public class Artwork {
   
   public void setLocation(PVector _l) {
     location = _l;
+  }
+  
+  public void setScale(int _s) {
+    heightScaleFactor = _s;
+  }
+  
+  public void setColor(int fillType) {
+    // fillTypes
+    // 0 - the standard color for all artworks
+    // 1 - gradient by total value of the current dataset
+    // 2 - the artworks primary color
+    
+    if (fillType == 0) {
+      fillColor = color(200, 200, 200);
+    } else if (fillType == 1) {
+      fillColor = color(map(totalPageViews,0,1000,0,255)*2, 200, 200);        
+    } else {
+      if (primaryColor != null) {
+        fillColor = unhex("FF" + primaryColor.substring(1));
+      } else {
+        fillColor = color(200, 200, 200);
+      }  
+    }
+  }
+  
+  public void setDataset(int _d) {
+    dataset = _d;
   }
 }

@@ -47,7 +47,7 @@ final static int ARTWORK_SPACING = 10;
 PFont fontA;
 
 PeasyCam cam;
-int selectedCamera = 4;
+int selectedCamera = 0;
 
 String dataSets[] = {"pageviews","uniquepageviews","edits"};
 int selectedDataSet = 0;
@@ -141,46 +141,27 @@ void draw(){
         dataPoint = a.getTotalEventsToDate(currentDate);
       }
       
-    } else {
-      if (selectedDataSet == 0) {
-        dataPoint = a.totalPageViews;
-      } else if (selectedDataSet == 1) {
-        dataPoint = a.totalUniquePageViews;
-      } else if (selectedDataSet == 2) {
-        dataPoint = a.totalEdits;
-      }
-    }
-    
-
-    if (dataPoint > 0 || dataPointCurrentDay > 0) {      
-      pushMatrix(); 
-      translate(a.location.x, -(dataPoint*ARTWORK_SIZE_HEIGHT)/2, a.location.z); 
-
-      //Color the object box
-      if (selectedFill == 0) {
-        fill(200, 200, 200);
-      } else if (selectedFill == 1) {
-        fill(map(a.totalPageViews,0,1000,0,255)*2, 200, 200);        
-      } else {
-        if (a.primaryColor != null) {
-          color c = unhex("FF" + a.primaryColor.substring(1));
-          fill(c);        
-        } else {
-          fill(200, 200, 200);
-        }  
-      }
-      
-      box(ARTWORK_SIZE_WIDTH, dataPoint*ARTWORK_SIZE_HEIGHT, ARTWORK_SIZE_DEPTH); 
-      popMatrix();
-
-      if (animateEvents && a.hasEventsToday(currentDate)) {
+      if (dataPoint > 0 || dataPointCurrentDay > 0) {      
         pushMatrix(); 
-        translate(a.location.x, -((dataPoint*ARTWORK_SIZE_HEIGHT) + ((dataPointCurrentDay*ARTWORK_SIZE_HEIGHT)/2)), a.location.z); 
-        fill(200, 0, 0);
-        box(ARTWORK_SIZE_WIDTH, dataPointCurrentDay*ARTWORK_SIZE_HEIGHT, ARTWORK_SIZE_DEPTH); 
-        popMatrix();      
-      }
-    }  
+  
+        translate(a.location.x, -(dataPoint*ARTWORK_SIZE_HEIGHT)/2, a.location.z); 
+        fill(a.fillColor);
+        box(ARTWORK_SIZE_WIDTH, dataPoint*ARTWORK_SIZE_HEIGHT, ARTWORK_SIZE_DEPTH); 
+        
+        popMatrix();
+  
+        if (a.hasEventsToday(currentDate)) {
+          pushMatrix(); 
+          translate(a.location.x, -((dataPoint*ARTWORK_SIZE_HEIGHT) + ((dataPointCurrentDay*ARTWORK_SIZE_HEIGHT)/2)), a.location.z); 
+          fill(200, 0, 0);
+          box(ARTWORK_SIZE_WIDTH, dataPointCurrentDay*ARTWORK_SIZE_HEIGHT, ARTWORK_SIZE_DEPTH); 
+          popMatrix();      
+        }
+      }        
+            
+    } else {
+      a.render();
+    }
   }
   
   if (showInfoPanel) {

@@ -43,10 +43,26 @@ void keyPressed() {
   if (keyCode == KeyEvent.VK_D) {
     //toggle data set
     selectedDataSet = (selectedDataSet + 1) % dataSets.length;
+
+    for (Artwork a: artworks.values()) {
+      a.setDataset(selectedDataSet);
+    }
+ 
+    for (Artwork a: filterArtworks.values()) {
+      a.setDataset(selectedDataSet);
+    }    
   }  
   
   if (keyCode == KeyEvent.VK_F) {
     selectedFill = (selectedFill + 1) % fills.length;
+    
+    for (Artwork a: artworks.values()) {
+      a.setColor(selectedFill);
+    }
+ 
+    for (Artwork a: filterArtworks.values()) {
+      a.setColor(selectedFill);
+    }   
   }    
   
   if (keyCode == KeyEvent.VK_UP) {
