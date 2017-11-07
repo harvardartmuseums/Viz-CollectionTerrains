@@ -49,7 +49,7 @@ PFont fontA;
 PeasyCam cam;
 int selectedCamera = 0;
 
-String dataSets[] = {"pageviews","uniquepageviews","edits"};
+String dataSets[] = {"all","pageviews","study center","moves","edits","conservation"};
 int selectedDataSet = 0;
 
 String fills[] = {"default","gradient","objectcolor"};
@@ -130,6 +130,10 @@ void draw(){
         
     //Get some value from the current artwork. The value is the height of the block we're about to render.
     if (animateEvents) {
+      if (!paused) {
+        a.update(currentDate);
+      }
+      
       if (a.hasEventsToday(currentDate)) {
         dataPointCurrentDay = a.getEventsCountByDate(currentDate);
         dataPoint = a.getTotalEventsToDate(currentDate) - dataPointCurrentDay;
@@ -157,7 +161,7 @@ void draw(){
           box(ARTWORK_SIZE_WIDTH, dataPointCurrentDay*ARTWORK_SIZE_HEIGHT, ARTWORK_SIZE_DEPTH); 
           popMatrix();      
         }
-      }        
+      }
             
     } else {
       a.render();
@@ -180,7 +184,7 @@ void draw(){
     saveFrame("output/frames####.png");
   }
 
-  if (animateEvents) {
+  if (animateEvents && !paused) {
     //There is a problem here. The dayCounter stops at the last day and there is no mechanism to stop adding the days event.
    // So last days events keep getting added to each object as the sketch continues to run. FIX THIS!!!!
     if (dayCounter < dates.size()-1) {
